@@ -39,14 +39,22 @@ class SocialGraph:
         The number of users must be greater than the average number of friendships.
         """
         # Reset graph
+        import random
+        fn = ['Jim','Bob','Janet','Mary','Sheela','Yin','Ahmed','Raj']
+        ln = ['Patel','Robinson','Smith','Shaikh','Wong','Fernandez','Singh','DeMello']
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
-        # Add users
+        for i in range(num_users):
+            self.add_user(random.choice(fn)+' '+random.choice(ln)) 
 
-        # Create friendships
+        for i in self.users:
+            for j in range(random.randrange(0,4)):
+                choose_friends = [i for i in set(self.users) - {i}]
+                self.add_friendship(i, random.choice(choose_friends))
+                # self.add_friendship(i,random.choice()
+       
 
     def get_all_social_paths(self, user_id):
         """
@@ -58,8 +66,45 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
-        return visited
+        visited = {i:False for i in self.users}
+        
+        # breakpoint()
+
+        connections = {}
+        # for i in 
+
+        for i in self.users:
+            if i != user_id:
+                connections[i] = self.get_path_to_friend(user_id,i)
+        
+        return connections
+
+    # helper function that returns shortest path from a friend to another friend in a network
+    # this will implement an iterative BFS algorithm
+    def get_path_to_friend(self, vertex, target): 
+
+        from util import Queue
+        visited = {i:False for i in self.users}
+        to_visit = Queue()
+        to_visit.enqueue([vertex])
+        
+        while to_visit.size() != 0:
+            current_path = to_visit.dequeue() #path-to-current
+            current_value = current_path[-1]
+            if visited[current_value] == False:
+                visited[current_value] = True
+                if current_value == target:
+                    return current_path
+                else:
+                    for i in self.friendships[current_value]:
+                        to_visit.enqueue(current_path + [i])
+
+            
+
+
+
+        
+    
 
 
 if __name__ == '__main__':
